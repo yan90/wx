@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\DB;
 class TextController extends Controller
 {
     public  function text1(){
-//        $list=DB::table('p_users')->limit(3)->get();
+//        $list=DB::table('p_users'p->limit(3)->get();
 //        dd($list);
 
     }
-    private function checkSignature(Request $request)
+    public function checkSignature(Request $request)
     {
         $echostr=$request->echostr;
         $signature = $_GET["signature"];
