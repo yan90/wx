@@ -12,6 +12,9 @@
 */
 
 Route::get('/', function () {
-    echo phpinfo();
     return view('welcome');
 });
+Route::get('phpinfo',function (){
+    echo phpinfo();
+});
+Route::get('text1','TextController@text1');
