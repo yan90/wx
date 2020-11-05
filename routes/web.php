@@ -18,3 +18,5 @@ Route::get('phpinfo',function (){
     echo phpinfo();
 });
 Route::get('text1','TextController@text1');
+Route::get('/wx','TextController@checkSignature');
+
