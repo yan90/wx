@@ -27,14 +27,13 @@ class TextController extends Controller
             //记录日记
             file_put_contents('wx_event.log',$xml_str);
             //把xml转换为php的对象或者数组
-
+            $this->sub();
             echo " ";
         }else{
             echo '';
         }
 
     }
-
     //关注回复
     public function sub(){
         $postStr = file_get_contents("php://input");
