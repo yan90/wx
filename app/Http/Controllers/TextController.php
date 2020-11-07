@@ -46,7 +46,8 @@ class TextController extends Controller
             if($postArray->Event=="subscribe"){
                 $content="你好，欢迎关注";
 //                Log::info('111=============='.$postArray);
-                $this->text($postArray,$content);
+                $ret = $this->text($postArray,$content);
+                echo $ret;
             }
         }
     }
