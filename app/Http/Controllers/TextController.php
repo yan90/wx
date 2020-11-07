@@ -59,6 +59,10 @@ class TextController extends Controller
                     $content=$this->getweather();
                     $this->text($postArray,$content);
                     break;
+                    case '时间';
+                    $content=$this->wxtime();
+                    $this->text($postArray,$content);
+                    break;
                 default;
                 $content='啊啊啊啊 亲  你在说什么呢 ';
                 $this->text($postArray,$content);
@@ -83,6 +87,11 @@ class TextController extends Controller
                             </xml>";
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
         echo $info;
+    }
+    //时间
+    public function wxtime(){
+       $wxdata= date  ('Y-m-d H:i:s');
+       echo $wxdata;
     }
     //获取天气预报
     public function getweather(){
