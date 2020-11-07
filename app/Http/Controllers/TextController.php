@@ -119,8 +119,7 @@ class TextController extends Controller
 
             $data=json_decode($response,true);
 
-            dd($data);
-            $token=$data->access_token;
+            $token=$data['access_token'];
             //缓存到redis中  时间为3600
 
             Redis::set($key,$token);
