@@ -45,12 +45,12 @@ class TextController extends Controller
         if($postArray->MsgType=="event"){
             if($postArray->Event=="subscribe"){
                 $content="你好，欢迎关注";
+                Log::info('111=============='.$content);
                 $this->text($postArray,$content);
             }
         }
     }
     public function text($postArray,$content){
-        Log::info('111=============='.$postArray);
 
         $toUser   = $postArray->FromUserName;
         $fromUser = $postArray->ToUserName;
