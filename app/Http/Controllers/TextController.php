@@ -39,20 +39,20 @@ class TextController extends Controller
     //关注回复
     public function sub(){
         $postStr = file_get_contents("php://input");
-        Log::info("====".$postStr);
+//        Log::info("====".$postStr);
         $postArray=simplexml_load_string($postStr);
-        Log::info('=============='.$postArray);
+//        Log::info('=============='.$postArray);
         if($postArray->MsgType=="event"){
             if($postArray->Event=="subscribe"){
                 $content="你好，欢迎关注";
-                Log::info('111=============='.$content);
+//                Log::info('111=============='.$postArray);
                 $this->text($postArray,$content);
             }
         }
     }
     public function text($postArray,$content){
-        Log::info('222=============='.$postArray);
-        Log::info('222=============='.$content);
+//        Log::info('222=============='.$postArray);
+//        Log::info('222=============='.$content);
         $toUser   = $postArray->FromUserName;
         $fromUser = $postArray->ToUserName;
         $template = "<xml>
