@@ -86,7 +86,7 @@ class TextController extends Controller
     }
     //获取天气预报
     public function getweather(){
-        $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
+        $url='https://devapi.qweather.com/v7/weather/now?location=101010700&key=0e48ddc1234143b99e8a741c550f49c4&gzip=n';
         $weather=file_get_contents($url);
         $weather=json_decode($weather,true);
         if($weather['success']){
