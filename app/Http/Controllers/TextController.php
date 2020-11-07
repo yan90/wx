@@ -51,7 +51,8 @@ class TextController extends Controller
         }
     }
     public function text($postArray,$content){
-
+        Log::info('222=============='.$postArray);
+        Log::info('222=============='.$content);
         $toUser   = $postArray->FromUserName;
         $fromUser = $postArray->ToUserName;
         $template = "<xml>
