@@ -52,9 +52,14 @@ class TextController extends Controller
             $msg=$postArray->Content;
             switch ($msg){
                 case '你好':
-                    $content='你好';
+                    $content='亲   你好';
                     $this->text($postArray,$content);
                     break;
+                default;
+                $content='啊啊啊啊 亲  你在说什么呢 ';
+                $this->text($postArray,$content);
+                break;
+
             }
         }
     }
