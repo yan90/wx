@@ -59,7 +59,7 @@ class TextController extends Controller
                     $content=$this->getweather();
                     $this->text($postArray,$content);
                     break;
-                    case '时间';
+               case '时间';
                     $content=$this->wxtime();
                     $this->text($postArray,$content);
                     break;
@@ -90,7 +90,7 @@ class TextController extends Controller
     }
     //时间
     public function wxtime(){
-       $wxdata= date  ('Y-m-d H:i:s');
+       $wxdata= date  ('Y-m-d H:i:s',time());
        echo $wxdata;
     }
     //获取天气预报
