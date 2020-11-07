@@ -18,7 +18,7 @@ Route::get('phpinfo',function (){
     echo phpinfo();
 });
 //Route::get('text1','TextController@text1');
-Route::get('/wx','TextController@checkSignature');  //接口微信
+Route::post('/wx','TextController@checkSignature');  //接口微信
 Route::get('/wx/token','TextController@token');  //access_token
 
 

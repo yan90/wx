@@ -7,11 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 class TextController extends Controller
 {
-    public  function text1(){
-//        $list=DB::table('p_users'p->limit(3)->get();
-//        dd($list);
 
-    }
     public function checkSignature(Request $request)
     {
         $echostr=$request->echostr;
@@ -26,11 +22,43 @@ class TextController extends Controller
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
-            echo $echostr;
+            //接收数据
+            $xml_str=file_get_contents("php://input");
+            //记录日记
+            file_put_contents('wx_event.log',$xml_str);
+            //把xml转换为php的对象或者数组
+
+            echo " ";
         }else{
-            return false;
+            echo '';
+        }
+
+    }
+
+    //关注回复
+    public function sub(){
+        $postStr = file_get_contents("php://input");
+        Log::info("====".$postStr);
+        $postArray=simplexml_load_string($postStr);
+        Log::info('=============='.$postArray);
+        if($postArray->MsgType=="event"){
+            if($postArray->Event=="subscribe"){
+                $content="你好，欢迎关注";
+                $this->text($postArray,$content);
+            }
         }
     }
+    public function text($postArray,$content){
+        $temple="<xml>
+  <ToUserName><![CDATA['.$postArray->FromUserName.']]></ToUserName>
+  <FromUserName><![CDATA['.$postArray->ToUserName.']]></FromUserName>
+  <CreateTime>'.time().'</CreateTime>
+  <MsgType><![CDATA[text]]></MsgType>
+  <Content><![CDATA['.$content.']]></Content>
+</xml>";
+        echo $temple;
+    }
+    //获取token
     public  function token(){
         $key='wx:access_token';
         //检查是否有token
@@ -39,18 +67,18 @@ class TextController extends Controller
             echo "有缓存";'</br>';
             echo $token;
         }else{
-        echo"无缓存";'</br>';
-        $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC')."";
+            echo"无缓存";'</br>';
+            $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC')."";
 //        echo $url;exit;
-        $response=file_get_contents($url);
+            $response=file_get_contents($url);
 
 
-        $data=json_decode($response,true);
-        $token=$data['access_token'];
-        //缓存到redis中  时间为3600
+            $data=json_decode($response,true);
+            $token=$data['access_token'];
+            //缓存到redis中  时间为3600
 
-        Redis::set($key,$token);
-        Redis::expire($key,3600);
+            Redis::set($key,$token);
+            Redis::expire($key,3600);
         }
 
         echo "access_token:".$token;
