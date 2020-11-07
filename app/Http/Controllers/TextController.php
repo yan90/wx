@@ -60,7 +60,7 @@ class TextController extends Controller
                     $this->text($postArray,$content);
                     break;
                case '时间';
-                    $content=$this->wxtime();
+                    $content=date  ('Y-m-d H:i:s',time());
                     $this->text($postArray,$content);
                     break;
                 default;
@@ -89,10 +89,10 @@ class TextController extends Controller
         echo $info;
     }
     //时间
-    public function wxtime(){
-       $wxdata= date  ('Y-m-d H:i:s',time());
-       echo $wxdata;
-    }
+//    public function wxtime(){
+//       $wxdata= date  ('Y-m-d H:i:s',time());
+//       echo $wxdata;
+//    }
     //获取天气预报
     public function getweather(){
         $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
