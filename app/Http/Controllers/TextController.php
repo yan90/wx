@@ -34,7 +34,6 @@ class TextController extends Controller
         }else{
             echo '';
         }
-
     }
     //关注回复
     public function sub(){
@@ -88,11 +87,6 @@ class TextController extends Controller
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
         echo $info;
     }
-    //时间
-//    public function wxtime(){
-//       $wxdata= date  ('Y-m-d H:i:s',time());
-//       echo $wxdata;
-//    }
     //获取天气预报
     public function getweather(){
         $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
@@ -124,7 +118,7 @@ class TextController extends Controller
 
 
             $data=json_decode($response,true);
-            $token=$data['access_token'];
+            $token=$data->access_token;
             //缓存到redis中  时间为3600
 
             Redis::set($key,$token);
