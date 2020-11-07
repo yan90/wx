@@ -48,6 +48,14 @@ class TextController extends Controller
 //                Log::info('111=============='.$postArray);
                 $this->text($postArray,$content);
             }
+        }elseif ($postArray->MsgType=="text"){
+            $msg=$postArray->Content;
+            switch ($msg){
+                case '你好':
+                    $content='你好';
+                    $this->text($postArray,$content);
+                    break;
+            }
         }
     }
     public function text($postArray,$content){
