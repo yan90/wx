@@ -54,6 +54,8 @@ class TextController extends Controller
 //        Log::info('222=============='.$postArray);
 //        Log::info('222=============='.$content);
         $toUser   = $postArray->FromUserName;
+                Log::info('222=============='.$toUser);
+
         $fromUser = $postArray->ToUserName;
         $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
