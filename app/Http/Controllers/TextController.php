@@ -28,7 +28,7 @@ class TextController extends Controller
             file_put_contents('wx_event.log',$xml_str);
             //把xml转换为php的对象或者数组
             $this->sub();
-            echo " ";
+            echo "";
         }else{
             echo '';
         }
