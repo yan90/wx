@@ -50,14 +50,17 @@ class TextController extends Controller
         }
     }
     public function text($postArray,$content){
-        $temple="<xml>
-  <ToUserName><![CDATA['.$postArray->FromUserName.']]></ToUserName>
-  <FromUserName><![CDATA['.$postArray->ToUserName.']]></FromUserName>
-  <CreateTime>'.time().'</CreateTime>
-  <MsgType><![CDATA[text]]></MsgType>
-  <Content><![CDATA['.$content.']]></Content>
-</xml>";
-        echo $temple;
+        $toUser   = $postArray->FromUserName;
+        $fromUser = $postArray->ToUserName;
+        $template = "<xml>
+                            <ToUserName><![CDATA[%s]]></ToUserName>
+                            <FromUserName><![CDATA[%s]]></FromUserName>
+                            <CreateTime>%s</CreateTime>
+                            <MsgType><![CDATA[%s]]></MsgType>
+                            <Content><![CDATA[%s]]></Content>
+                            </xml>";
+        $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
+        return $info;
     }
     //获取token
     public  function token(){
