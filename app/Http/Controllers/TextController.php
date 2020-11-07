@@ -55,6 +55,10 @@ class TextController extends Controller
                     $content='亲   你好';
                     $this->text($postArray,$content);
                     break;
+                case '天气':
+                    $content=$this->getweather();
+                    $this->text($postArray,$content);
+                    break;
                 default;
                 $content='啊啊啊啊 亲  你在说什么呢 ';
                 $this->text($postArray,$content);
@@ -79,6 +83,21 @@ class TextController extends Controller
                             </xml>";
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
         echo $info;
+    }
+    //获取天气预报
+    public function getweather(){
+        $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
+        $weather=file_get_contents($url);
+        $weather=json_decode($weather,true);
+        if($weather['success']){
+            $content = '';
+            foreach($weather['result'] as $v){
+                $content .= '日期：'.$v['days'].$v['week'].' 当日温度：'.$v['temperature'].' 天气：'.$v['weather'].' 风向：'.$v['wind'];
+            }
+        }
+        Log::info('===='.$content);
+        return $content;
+
     }
     //获取token
     public  function token(){
