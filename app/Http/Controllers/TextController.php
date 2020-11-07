@@ -46,8 +46,7 @@ class TextController extends Controller
             if($postArray->Event=="subscribe"){
                 $content="你好，欢迎关注";
 //                Log::info('111=============='.$postArray);
-                $ret = $this->text($postArray,$content);
-                echo $ret;
+                $this->text($postArray,$content);
             }
         }
     }
@@ -66,7 +65,7 @@ class TextController extends Controller
                             <Content><![CDATA[%s]]></Content>
                             </xml>";
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
-        return $info;
+        echo $info;
     }
     //获取token
     public  function token(){
