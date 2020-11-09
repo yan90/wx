@@ -74,8 +74,10 @@ class TextController extends Controller
 //        Log::info('222=============='.$content);
         $toUser   = $postArray->FromUserName;//openid
         $token=$this->token();
-        $data='https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN';
-        echo $data;
+        $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
+        $wetch=file_put_contents('user_wetch',$data);//存文件
+        
+
                 Log::info('222=============='.$toUser);
 
         $fromUser = $postArray->ToUserName;
@@ -110,14 +112,13 @@ class TextController extends Controller
         //检查是否有token
         $token=Redis::get($key);
         if($token){
-            echo "有缓存";'</br>';
-            echo $token;
+//            echo "有缓存";'</br>';
+//            echo $token;
         }else{
-            echo"无缓存";'</br>';
+//            echo"无缓存";'</br>';
             $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC')."";
 //        echo $url;exit;
             $response=file_get_contents($url);
-
 
             $data=json_decode($response,true);
 
@@ -132,6 +133,10 @@ class TextController extends Controller
     }
     //测试
     public function tell(){
+        $token=$this->token();
+//        echo  $token;exit;
+        $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=&lang=zh_CN";
+        echo $data;
     print_r($_GET);
     }
     //测试
