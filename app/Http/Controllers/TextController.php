@@ -86,12 +86,12 @@ class TextController extends Controller
             'sex'=>$json['sex'],
             'city'=>$json['city'],
             'country'=>$json['country'],
-            'province'=>$json['provice'],
+            'province'=>$json['province'],
             'language'=>$json['language'],
             'subscribe_time'=>$json['subscribe_time'],
         ];
         $weachInfo=WeachModel::insert($data);
-        
+
 
                 Log::info('222=============='.$toUser);
 
