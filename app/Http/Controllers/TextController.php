@@ -78,12 +78,21 @@ class TextController extends Controller
         file_put_contents('user_wetch',$data);//存文件
         $wetch=file_get_contents($data);
         $json=json_decode($wetch,true);
-        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
-        die;
-//        $data=[
-//            'openid'=>$toUser,
-//            'nickname'=>$json['nickname'];
-//        ];
+//        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
+//        die;
+        $data=[
+            'openid'=>$toUser,
+            'nickname'=>$json['nickname'],
+            'sex'=>$json['sex'],
+            'city'=>$json['city'],
+            'country'=>$json['country'],
+            'province'=>$json['provice'],
+            'language'=>$json['language'],
+            'subscribe_time'=>$json['subscribe_time'],
+        ];
+        $weachInfo=WeachModel::insert($data);
+        
+
                 Log::info('222=============='.$toUser);
 
         $fromUser = $postArray->ToUserName;
