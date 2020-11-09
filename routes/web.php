@@ -20,5 +20,5 @@ Route::get('phpinfo',function (){
 //Route::get('text1','TextController@text1');
 Route::post('/wx','TextController@checkSignature');  //接口微信
 Route::get('/wx/token','TextController@token');  //access_token
-
-
+Route::get('/tell','TextController@tell');  //postman测试
+Route::post('/tell2','TextController@tell2');  //postman测试

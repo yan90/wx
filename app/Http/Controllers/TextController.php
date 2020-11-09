@@ -66,14 +66,16 @@ class TextController extends Controller
                 $content='啊啊啊啊 亲  你在说什么呢 ';
                 $this->text($postArray,$content);
                 break;
-
             }
         }
     }
     public function text($postArray,$content){
 //        Log::info('222=============='.$postArray);
 //        Log::info('222=============='.$content);
-        $toUser   = $postArray->FromUserName;
+        $toUser   = $postArray->FromUserName;//openid
+        $token=$this->token();
+        $data='https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN';
+        echo $data;
                 Log::info('222=============='.$toUser);
 
         $fromUser = $postArray->ToUserName;
@@ -126,8 +128,19 @@ class TextController extends Controller
             Redis::expire($key,3600);
         }
 
-        echo "access_token:".$token;
+        return $token;
     }
-
-
+    //测试
+    public function tell(){
+    print_r($_GET);
+    }
+    //测试
+    public function tell2(){
+        print_r($_POST);
+        $aa=file_get_contents("php://input");
+        echo $aa;
+        $data=json_decode($aa,TRUE);
+        print_r($data);
+    }
 }
+
