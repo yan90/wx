@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Log;
-
+use App\models\WeachModel;
 class TextController extends Controller
 {
 
@@ -75,9 +75,15 @@ class TextController extends Controller
         $toUser   = $postArray->FromUserName;//openid
         $token=$this->token();
         $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
-        $wetch=file_put_contents('user_wetch',$data);//存文件
-        
-
+        file_put_contents('user_wetch',$data);//存文件
+        $wetch=file_get_contents($data);
+        $json=json_decode($wetch,true);
+        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
+        die;
+//        $data=[
+//            'openid'=>$toUser,
+//            'nickname'=>$json['nickname'];
+//        ];
                 Log::info('222=============='.$toUser);
 
         $fromUser = $postArray->ToUserName;
