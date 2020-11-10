@@ -40,14 +40,15 @@ class TextController extends Controller
             //调用关注回复
             $this->sub();
             //调用自定义菜单
-            $this->custom();
+//            $this->custom();
             echo "";
         }else{
             echo '';
         }
     }
     //关注回复
-    public function sub(){
+    public function sub($postArray){
+        $toUser= $postArray->FromUserName;//openid
         $postStr = file_get_contents("php://input");
 //        Log::info("====".$postStr);
         $postArray=simplexml_load_string($postStr);
@@ -55,6 +56,11 @@ class TextController extends Controller
         //evnet  判断是不是推送事件
         if($postArray->MsgType=="event"){
             if($postArray->Event=="subscribe"){
+                $WeachModelInfo=WeachModel::where('openid',$toUser['openid'])->first();
+                if(!empty($WeachModelInfo)) {
+                    $content = "欢迎回来";
+                }
+
                 $content="你好，欢迎关注";
 //                Log::info('111=============='.$postArray);
                 $this->text($postArray,$content);
@@ -94,14 +100,8 @@ class TextController extends Controller
         $json=json_decode($wetch,true);
 //        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
 //        die;
-        //获取openid
-        $WeachModelInfo=WeachModel::where('openid',$json['openid'])->first();
-            //判断
-        if(!empty($WeachModelInfo)){
-            $content="欢迎回来";
         $data=[
-
-            'openid'=>$json['openid'],
+            'openid'=>$toUser,
             'nickname'=>$json['nickname'],
             'sex'=>$json['sex'],
             'city'=>$json['city'],
@@ -111,7 +111,7 @@ class TextController extends Controller
             'subscribe_time'=>$json['subscribe_time'],
         ];
         $weachInfo=WeachModel::insert($data);
-        }
+
                 Log::info('222=============='.$toUser);
         $fromUser = $postArray->ToUserName;
         $template = "<xml>
