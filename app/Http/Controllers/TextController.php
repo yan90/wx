@@ -56,7 +56,7 @@ class TextController extends Controller
         //evnet  判断是不是推送事件
         if($postArray->MsgType=="event"){
             if($postArray->Event=="subscribe"){
-                $WeachModelInfo=WeachModel::where('openid',$toUser['openid'])->first();
+                $WeachModelInfo=WeachModel::where('openid',$toUser)->first();
                 if(!empty($WeachModelInfo)) {
                     $content = "欢迎回来";
                 }else{
