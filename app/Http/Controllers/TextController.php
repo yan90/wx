@@ -100,7 +100,8 @@ class TextController extends Controller
         if(!empty($WeachModelInfo)){
             $content="欢迎回来";
         $data=[
-            'openid'=>$toUser,
+
+            'openid'=>$json['openid'],
             'nickname'=>$json['nickname'],
             'sex'=>$json['sex'],
             'city'=>$json['city'],
