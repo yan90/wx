@@ -47,12 +47,12 @@ class TextController extends Controller
         }
     }
     //关注回复
-    public function sub($postArray){
-        $toUser= $postArray->FromUserName;//openid
+    public function sub(){
         $postStr = file_get_contents("php://input");
 //        Log::info("====".$postStr);
         $postArray=simplexml_load_string($postStr);
 //        Log::info('=============='.$postArray);
+        $toUser= $postArray->FromUserName;//openid
         //evnet  判断是不是推送事件
         if($postArray->MsgType=="event"){
             if($postArray->Event=="subscribe"){
