@@ -37,7 +37,10 @@ class TextController extends Controller
             //记录日记
             file_put_contents('wx_event.log',$xml_str);
             //把xml转换为php的对象或者数组
+            //调用关注回复
             $this->sub();
+            //调用自定义菜单
+            $this->custom();
             echo "";
         }else{
             echo '';
@@ -78,10 +81,12 @@ class TextController extends Controller
             }
         }
     }
+    //关注回复  判断再次回来
     public function text($postArray,$content){
 //        Log::info('222=============='.$postArray);
 //        Log::info('222=============='.$content);
-        $toUser   = $postArray->FromUserName;//openid
+        $toUser= $postArray->FromUserName;//openid
+        echo $toUser;exit;
         $token=$this->token();
         $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
         file_put_contents('user_wetch',$data);//存文件
@@ -234,6 +239,7 @@ class TextController extends Controller
         $this->url($url,$menu);
 //    echo $menu;
     }
+    //自定义菜单封装的
     public function url($url,$menu){
         //1.初始化
         $ch = curl_init($url);
