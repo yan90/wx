@@ -100,7 +100,7 @@ class TextController extends Controller
             'sex'=>$json['sex'],
             'city'=>$json['city'],
             'country'=>$json['country'],
-            'province'=>$json['province  n'],
+            'province'=>$json['province'],
             'language'=>$json['language'],
             'subscribe_time'=>$json['subscribe_time'],
         ];
