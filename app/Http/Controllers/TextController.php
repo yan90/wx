@@ -96,7 +96,7 @@ class TextController extends Controller
 //        die;
         //获取openid
         $WeachModelInfo=WeachModel::where('openid',$json['openid'])->first();
-
+            //判断
         if(!empty($WeachModelInfo)){
             $content="欢迎回来";
         $data=[
