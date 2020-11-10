@@ -47,7 +47,7 @@ class TextController extends Controller
         }
     }
     //关注回复
-    public function sub($postArray){
+    public function sub(){
         $toUser= $postArray->FromUserName;//openid
         $postStr = file_get_contents("php://input");
 //        Log::info("====".$postStr);
