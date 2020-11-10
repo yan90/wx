@@ -86,7 +86,7 @@ class TextController extends Controller
 //        Log::info('222=============='.$postArray);
 //        Log::info('222=============='.$content);
         $toUser= $postArray->FromUserName;//openid
-        echo $toUser;exit;
+//        echo $toUser;exit;
         $token=$this->token();
         $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
         file_put_contents('user_wetch',$data);//存文件
