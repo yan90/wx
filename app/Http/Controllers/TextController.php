@@ -32,8 +32,6 @@ class TextController extends Controller
             $response=$client->request ('GET',$url,['verify'=>false]);  //发起请求并接受响应
             $json_str=$response->getBody();    //服务器的响应数据
             echo $json_str;
-
-
             //接收数据
             $xml_str=file_get_contents("php://input");
             //记录日记
@@ -91,7 +89,9 @@ class TextController extends Controller
         $json=json_decode($wetch,true);
 //        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
 //        die;
-        if(!empty($json)){
+        $WeachModelInfo=WeachModel::where('openid')->first();
+            
+        if(!empty($WeachModelInfo)){
             $content="欢迎回来";
         $data=[
             'openid'=>$toUser,
@@ -230,7 +230,7 @@ class TextController extends Controller
         $url=' https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token.'';
 //        echo $url;
         $this->url($url,$menu);
-    echo $menu;
+//    echo $menu;
     }
     public function url($url,$menu){
         //1.初始化
