@@ -114,8 +114,6 @@ class TextController extends Controller
 //        Log::info('222=============='.$content);
         $toUser= $postArray->FromUserName;//openid
 //        echo $toUser;exit;
-
-
                 Log::info('222=============='.$toUser);
         $fromUser = $postArray->ToUserName;
         $template = "<xml>
@@ -210,57 +208,40 @@ class TextController extends Controller
     }
     //自定义菜单
     public function custom(){
-        $menu = '{
-             "button":[
-             {
-                  "type":"click",
-                  "name":"今日歌曲",
-                  "key":"V1001_TODAY_MUSIC"
-              },
-              {
-              "type":"click",
-                  "name":"天气",
-                  "key":$this->getweather(),
-              },
-              {
-                   "name":"优惠活动",
-                   "sub_button":[
-                   {
-                       "type":"view",
-                       "name":"今日领劵",
-                       "url":"http://www.soso.com/"
-                    },
-                    {
-                       "type":"click",
-                       "name":"我的优惠券",
-                       "key":"V1001_GOOD"
-                    }]
-               }]
-         }';
-
         $access_token=$this->token();
-        $url=' https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token.'';
+        $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token;
 //        echo $url;
-        $this->url($url,$menu);
-//    echo $menu;
+        $array=[
+            'button'=>[
+                [
+              'type'=>'click',
+              'name'=>"天气",
+              'key'=>'WEATHER'
+            ],
+            [
+                'name'=>'菜单',
+                "sub_button"=>[
+                  [
+                    'type'=>'view',
+                    'name'=>'百度',
+                    'url'=>'http://www.baidu.com'
+                  ],
+                ]
+            ]
+                ]
+        ];
+//        $array->toArray();
+//        print_r($array) ;exit;
+        $client=new Client();
+        $response=$client->request('POST',$url,[
+
+            'verify'=>false,
+            'body'=>json_encode($array,JSON_UNESCAPED_UNICODE)
+        ]);
+
+        $data=$response->getBody();
+        echo $data;
     }
-    //自定义菜单封装的
-    public function url($url,$menu){
-        //1.初始化
-        $ch = curl_init($url);
-        //2.设置
-        curl_setopt($ch,CURLOPT_URL,$url);//设置提交地址
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);//设置返回值字符串
-        curl_setopt($ch,CURLOPT_POST,1);//设置提交方式为post
-        curl_setopt($ch,CURLOPT_POSTFIELDS,$menu);
-        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
-        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
-        //3.执行
-        $output = curl_exec($ch);
-        //4.关闭
-        curl_close($ch);
-//        dd($output);
-        return $output;
-    }
+
 }
 
