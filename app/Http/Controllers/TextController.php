@@ -89,8 +89,9 @@ class TextController extends Controller
         $json=json_decode($wetch,true);
 //        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
 //        die;
-        $WeachModelInfo=WeachModel::where('openid')->first();
-            
+        //获取openid
+        $WeachModelInfo=WeachModel::where('openid',$json['openid'])->first();
+
         if(!empty($WeachModelInfo)){
             $content="欢迎回来";
         $data=[
@@ -117,6 +118,7 @@ class TextController extends Controller
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
         echo $info;
     }
+
     //获取天气预报
     public function getweather(){
         $url='http://api.k780.com:88/?app=weather.future&weaid=beijing&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
