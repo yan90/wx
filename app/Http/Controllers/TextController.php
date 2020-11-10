@@ -57,6 +57,9 @@ class TextController extends Controller
         if($postArray->MsgType=="event"){
             if($postArray->Event=="subscribe"){
                 $WeachModelInfo=WeachModel::where('openid',$toUser)->first();
+                if(is_object($WeachModelInfo)){
+                    $WeachModelInfo = $WeachModelInfo->toArray();
+                }
                 if(!empty($WeachModelInfo)) {
                     $content = "欢迎回来";
                 }else{
