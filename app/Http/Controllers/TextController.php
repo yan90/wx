@@ -139,7 +139,7 @@ class TextController extends Controller
         //检查是否有token
         $token=Redis::get($key);
         if($token){
-            echo "有缓存";'</br>';
+//            echo "有缓存";'</br>';
 //            echo $token;
         }else{
 //            echo"无缓存";'</br>';
@@ -164,22 +164,6 @@ class TextController extends Controller
         }
 
         return $token;
-    }
-    //测试
-    public function tell(){
-//        $token=$this->token();
-////        echo  $token;exit;
-//        $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=&lang=zh_CN";
-//        echo $data;
-    print_r($_GET);
-    }
-    //测试
-    public function tell2(){
-        print_r($_POST);
-        $aa=file_get_contents("php://input");
-        echo $aa;
-        $data=json_decode($aa,TRUE);
-        print_r($data);
     }
     //GET测试
     public function guzzle(){
@@ -207,15 +191,63 @@ class TextController extends Controller
                     'name'=>'media',
                     'contents'=>fopen('timg.jpg','r'),
                 ], //上传的文件路径
-
             ]
         ]);  //发起请求并接受响应
         $data=$response->getBody();
         echo $data;
+    }
+    //自定义菜单
+    public function custom(){
+        $menu = '{
+             "button":[
+             {
+                  "type":"click",
+                  "name":"今日歌曲",
+                  "key":"V1001_TODAY_MUSIC"
+              },
+              {
+              "type":"click",
+                  "name":"天气",
+                  "key":$this->getweather(),
+              },
+              {
+                   "name":"优惠活动",
+                   "sub_button":[
+                   {
+                       "type":"view",
+                       "name":"今日领劵",
+                       "url":"http://www.soso.com/"
+                    },
+                    {
+                       "type":"click",
+                       "name":"我的优惠券",
+                       "key":"V1001_GOOD"
+                    }]
+               }]
+         }';
 
-
-
-
+        $access_token=$this->token();
+        $url=' https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$access_token.'';
+//        echo $url;
+        $this->url($url,$menu);
+    echo $menu;
+    }
+    public function url($url,$menu){
+        //1.初始化
+        $ch = curl_init($url);
+        //2.设置
+        curl_setopt($ch,CURLOPT_URL,$url);//设置提交地址
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,TRUE);//设置返回值字符串
+        curl_setopt($ch,CURLOPT_POST,1);//设置提交方式为post
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$menu);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,false);
+        curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,false);
+        //3.执行
+        $output = curl_exec($ch);
+        //4.关闭
+        curl_close($ch);
+//        dd($output);
+        return $output;
     }
 }
 
