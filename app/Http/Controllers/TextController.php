@@ -59,9 +59,9 @@ class TextController extends Controller
                 $WeachModelInfo=WeachModel::where('openid',$toUser['openid'])->first();
                 if(!empty($WeachModelInfo)) {
                     $content = "欢迎回来";
-                }
-
+                }else{
                 $content="你好，欢迎关注";
+                }
 //                Log::info('111=============='.$postArray);
                 $this->text($postArray,$content);
             }
