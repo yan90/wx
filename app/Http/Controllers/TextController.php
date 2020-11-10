@@ -64,6 +64,24 @@ class TextController extends Controller
                     $content = "欢迎回来";
                 }else{
                 $content="你好，欢迎关注";
+                    $token=$this->token();
+                    $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
+                    file_put_contents('user_wetch',$data);//存文件
+                    $wetch=file_get_contents($data);
+                    $json=json_decode($wetch,true);
+//        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
+//        die;
+                    $data=[
+                        'openid'=>$toUser,
+                        'nickname'=>$json['nickname'],
+                        'sex'=>$json['sex'],
+                        'city'=>$json['city'],
+                        'country'=>$json['country'],
+                        'province'=>$json['province'],
+                        'language'=>$json['language'],
+                        'subscribe_time'=>$json['subscribe_time'],
+                    ];
+                    $weachInfo=WeachModel::insert($data);
                 }
 //                Log::info('111=============='.$postArray);
                 $this->text($postArray,$content);
@@ -96,24 +114,7 @@ class TextController extends Controller
 //        Log::info('222=============='.$content);
         $toUser= $postArray->FromUserName;//openid
 //        echo $toUser;exit;
-        $token=$this->token();
-        $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
-        file_put_contents('user_wetch',$data);//存文件
-        $wetch=file_get_contents($data);
-        $json=json_decode($wetch,true);
-//        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
-//        die;
-        $data=[
-            'openid'=>$toUser,
-            'nickname'=>$json['nickname'],
-            'sex'=>$json['sex'],
-            'city'=>$json['city'],
-            'country'=>$json['country'],
-            'province'=>$json['province'],
-            'language'=>$json['language'],
-            'subscribe_time'=>$json['subscribe_time'],
-        ];
-        $weachInfo=WeachModel::insert($data);
+
 
                 Log::info('222=============='.$toUser);
         $fromUser = $postArray->ToUserName;
