@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Log;
 use App\models\WeachModel;
+use GuzzleHttp\Client;
 class TextController extends Controller
 {
 
@@ -24,6 +25,15 @@ class TextController extends Controller
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
+            $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC')."";
+            //使用guzzle发起get请求
+            $client=new Client();
+            //['verify'=>false]   不加这个会报ssl错误  因为默认是true
+            $response=$client->request ('GET',$url,['verify'=>false]);  //发起请求并接受响应
+            $json_str=$response->getBody();    //服务器的响应数据
+            echo $json_str;
+
+
             //接收数据
             $xml_str=file_get_contents("php://input");
             //记录日记
@@ -41,6 +51,7 @@ class TextController extends Controller
 //        Log::info("====".$postStr);
         $postArray=simplexml_load_string($postStr);
 //        Log::info('=============='.$postArray);
+        //evnet  判断是不是推送事件
         if($postArray->MsgType=="event"){
             if($postArray->Event=="subscribe"){
                 $content="你好，欢迎关注";
@@ -80,21 +91,21 @@ class TextController extends Controller
         $json=json_decode($wetch,true);
 //        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
 //        die;
+        if(!empty($json)){
+            $content="欢迎回来";
         $data=[
             'openid'=>$toUser,
             'nickname'=>$json['nickname'],
             'sex'=>$json['sex'],
             'city'=>$json['city'],
             'country'=>$json['country'],
-            'province'=>$json['province'],
+            'province'=>$json['province  n'],
             'language'=>$json['language'],
             'subscribe_time'=>$json['subscribe_time'],
         ];
         $weachInfo=WeachModel::insert($data);
-
-
+        }
                 Log::info('222=============='.$toUser);
-
         $fromUser = $postArray->ToUserName;
         $template = "<xml>
                             <ToUserName><![CDATA[%s]]></ToUserName>
@@ -108,9 +119,10 @@ class TextController extends Controller
     }
     //获取天气预报
     public function getweather(){
-        $url='http://api.k780.com:88/?app=weather.future&weaid=heze&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
+        $url='http://api.k780.com:88/?app=weather.future&weaid=beijing&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
         $weather=file_get_contents($url);
         $weather=json_decode($weather,true);
+//        dd($weather);
         if($weather['success']){
             $content = '';
             foreach($weather['result'] as $v){
@@ -127,7 +139,7 @@ class TextController extends Controller
         //检查是否有token
         $token=Redis::get($key);
         if($token){
-//            echo "有缓存";'</br>';
+            echo "有缓存";'</br>';
 //            echo $token;
         }else{
 //            echo"无缓存";'</br>';
@@ -137,9 +149,16 @@ class TextController extends Controller
 
             $data=json_decode($response,true);
 
+            //使用guzzle发起get请求
+            $client=new Client();
+            //['verify'=>false]   不加这个会报ssl错误  因为默认是true
+            $response=$client->request ('GET',$url,['verify'=>false]);  //发起请求并接受响应
+            $json_str=$response->getBody();    //服务器的响应数据
+//            echo $json_str;
+            $data=json_decode($json_str,true);
+
             $token=$data['access_token'];
             //缓存到redis中  时间为3600
-
             Redis::set($key,$token);
             Redis::expire($key,3600);
         }
@@ -148,10 +167,10 @@ class TextController extends Controller
     }
     //测试
     public function tell(){
-        $token=$this->token();
-//        echo  $token;exit;
-        $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=&lang=zh_CN";
-        echo $data;
+//        $token=$this->token();
+////        echo  $token;exit;
+//        $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=&lang=zh_CN";
+//        echo $data;
     print_r($_GET);
     }
     //测试
@@ -161,6 +180,42 @@ class TextController extends Controller
         echo $aa;
         $data=json_decode($aa,TRUE);
         print_r($data);
+    }
+    //GET测试
+    public function guzzle(){
+//        echo __METHOD__;
+        $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC')."";
+        //使用guzzle发起get请求
+        $client=new Client();
+        //['verify'=>false]   不加这个会报ssl错误  因为默认是true
+        $response=$client->request ('GET',$url,['verify'=>false]);  //发起请求并接受响应
+        $json_str=$response->getBody();    //服务器的响应数据
+    echo $json_str;
+    }
+    //POST 上传素材
+    public function guzzle2(){
+        $access_token=$this->token();
+        $type='image';
+        $url='https://api.weixin.qq.com/cgi-bin/media/upload?access_token='.$access_token.'&type='.$type;
+//        echo $url;exit;
+        $client=new Client();
+        //['verify'=>false]   不加这个会报ssl错误  因为默认是true
+        $response=$client->request ('POST',$url,[
+            'verify'=>false,
+            'multipart'=>[
+                [
+                    'name'=>'media',
+                    'contents'=>fopen('timg.jpg','r'),
+                ], //上传的文件路径
+
+            ]
+        ]);  //发起请求并接受响应
+        $data=$response->getBody();
+        echo $data;
+
+
+
+
     }
 }
 
