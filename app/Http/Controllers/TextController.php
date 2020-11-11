@@ -253,8 +253,8 @@ class TextController extends Controller
             'button'=>[
                 [
               'type'=>'click',
-              'name'=>"天气",
-              'key'=>'WEATHER',
+              'name'=>"jd.2004",
+              'key'=>'k_jd_2004',
             ],
             [
                 'name'=>'菜单',
@@ -264,6 +264,16 @@ class TextController extends Controller
                     'name'=>'百度',
                     'url'=>'http://www.baidu.com'
                   ],
+                    [
+                        'type'  => 'click',
+                        'name'  => '天气',
+                        'key'   => 'weather'
+                    ],
+                    [
+                        'type'  => 'click',
+                        'name'  => '签到',
+                        'key'   => 'checkin'
+                    ]
                 ]
             ]
                 ]
