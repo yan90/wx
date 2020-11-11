@@ -259,11 +259,11 @@ class TextController extends Controller
             [
                 'name'=>'菜单',
                 "sub_button"=>[
-                  [
-                    'type'=>'view',
-                    'name'=>'百度',
-                    'url'=>'http://www.baidu.com'
-                  ],
+                    [
+                        'type'  => 'pic_photo_or_album',
+                        'name'  => '传图',
+                        'key'   => 'uploadimg'
+                    ],
                     [
                         'type'  => 'click',
                         'name'  => '天气',
