@@ -116,8 +116,12 @@ class TextController extends Controller
             //将聊天入库
             $msg_type=$postArray->MsgType;//推送事件的消息类型
             switch ($msg_type){
+                //视频入库
                 case 'video':
                     $this->videohandler($postArray);
+                    break;
+                    case 'voice';
+                    $this->voicehandler($postArray);
                     break;
             }
         }
@@ -255,8 +259,18 @@ class TextController extends Controller
         $data=$response->getBody();
         echo $data;
     }
-    //视频
+    //视频入库
     protected function videohandler($postArray){
+        $data=[
+            'add_time'=>$postArray->CreateTime,
+            'media_type'=>$postArray->MsgType,
+            'media_id'=>$postArray->MediaId,
+            'msg_id'=>$postArray->MsgId,
+        ];
+        MediaModel::insert($data);
+    }
+    //音频
+    protected function voicehandler($postArray){
         $data=[
             'add_time'=>$postArray->CreateTime,
             'media_type'=>$postArray->MsgType,
