@@ -128,9 +128,13 @@ class TextController extends Controller
                 case 'text';
                     $this->texthandler($postArray);
                     break;
+                    //图片
+                case 'image';
+                    $this->picture($postArray);
+                    break;
             }
         }
-
+        //微信材料库
     }
     //关注回复
     public function text($postArray,$content){
@@ -291,6 +295,16 @@ class TextController extends Controller
             'media_type'=>$postArray->MsgType,
             'openid'=>$postArray->FromUserName,
             'msg_id'=>$postArray->MsgId,
+        ];
+        MediaModel::insert($data);
+    }
+    //图片
+    protected function picture ($postArray){
+        $data=[
+            'media_url'=>$postArray->PicUrl,//图片链接，支持JPG、PNG格式，较好的效果为大图360*200，小图200*200
+            'media_type'=>'image',//类型为图片
+            'add_time'=>time(),
+            'openid'=>$postArray->FromUserName,
         ];
         MediaModel::insert($data);
     }
