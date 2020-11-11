@@ -94,7 +94,7 @@ class TextController extends Controller
                     switch ($postArray->EventKey){
                         case 'WEATHER';
                         $this->getweather();
-                        $result=$this->$this->text($postArray,$content);
+                        $result=$this->text($postArray,$content);
                         return $result;
                         }
                     }
