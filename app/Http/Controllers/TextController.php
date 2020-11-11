@@ -89,7 +89,7 @@ class TextController extends Controller
                 $this->text($postArray,$content);
             }
             //点击二级 获取天气
-            
+
 
 
         }elseif ($postArray->MsgType=="text"){
@@ -112,7 +112,7 @@ class TextController extends Controller
                 $this->text($postArray,$content);
                 break;
             }
-
+//
         }
         //判断入库
         if(!empty($postArray)){
