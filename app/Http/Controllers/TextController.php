@@ -88,12 +88,12 @@ class TextController extends Controller
 //                Log::info('111=============='.$postArray);
                 $this->text($postArray,$content);
             }
-            //判断以及菜单获取天气
-                        if(strtolower($postArray->MsgType)=='Event'){
-                            if($postArray->Event=='CLICK'){
-                                switch ($postArray->EventKey){
-                                    case 'WEATHER';
-                                        $this->getweather();
+            //点击二级 获取天气
+            elseif(strtolower($postArray->MsgType)=='Event'){
+                if($postArray->Event=='CLICK'){
+                    switch ($postArray->EventKey){
+                        case 'WEATHER';
+                        $this->getweather();
                                 }
                             }
                         }
