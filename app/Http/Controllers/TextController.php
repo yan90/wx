@@ -163,7 +163,7 @@ class TextController extends Controller
                             <Content><![CDATA[%s]]></Content>
                             </xml>";
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
-        echo $info;
+        return $info;
     }
     //获取天气预报
     public function getweather(){
