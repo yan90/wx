@@ -120,8 +120,13 @@ class TextController extends Controller
                 case 'video':
                     $this->videohandler($postArray);
                     break;
+                    //音频
                     case 'voice';
                     $this->voicehandler($postArray);
+                    break;
+                    //文本
+                case 'text';
+                    $this->texthandler($postArray);
                     break;
             }
         }
@@ -271,6 +276,16 @@ class TextController extends Controller
     }
     //音频
     protected function voicehandler($postArray){
+        $data=[
+            'add_time'=>$postArray->CreateTime,
+            'media_type'=>$postArray->MsgType,
+            'media_id'=>$postArray->MediaId,
+            'msg_id'=>$postArray->MsgId,
+        ];
+        MediaModel::insert($data);
+    }
+    //文本
+    protected function texthandler($postArray){
         $data=[
             'add_time'=>$postArray->CreateTime,
             'media_type'=>$postArray->MsgType,
