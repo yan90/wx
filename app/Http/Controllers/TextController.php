@@ -94,6 +94,8 @@ class TextController extends Controller
                     switch ($postArray->EventKey){
                         case 'WEATHER';
                         $this->getweather();
+                        $result=$this->$this->text($postArray,$content);
+                        return $result;
                         }
                     }
                 }
@@ -242,7 +244,8 @@ class TextController extends Controller
             ]
         ]);  //发起请求并接受响应
         $data=$response->getBody();
-        echo $data;
+        return $data;
+
     }
     //自定义菜单
     public function custom(){
