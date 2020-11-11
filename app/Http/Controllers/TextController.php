@@ -90,15 +90,7 @@ class TextController extends Controller
             }
             //点击二级 获取天气
             if(strtolower($postArray->MsgType)=='event'){
-                if($postArray->Event=='CLICK'){
-                    switch ($postArray->EventKey){
-                        case 'WEATHER';
-                        $this->getweather();
-                        $this->text($postArray,$content);
-
-                        }
-                    }
-                }
+                
 
         }elseif ($postArray->MsgType=="text"){
             $msg=$postArray->Content;
@@ -263,7 +255,7 @@ class TextController extends Controller
                 'name'=>'菜单',
                 "sub_button"=>[
                     [
-                        'type'  => 'pic_photo_or_album',
+                        'type'  => 'click',
                         'name'  => '传图',
                         'key'   => 'uploadimg'
                     ],
