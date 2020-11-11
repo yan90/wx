@@ -243,7 +243,7 @@ class TextController extends Controller
                 [
               'type'=>'click',
               'name'=>"天气",
-              'key'=>'WEATHER'
+              'key'=>$this->getweather()
             ],
             [
                 'name'=>'菜单',
@@ -308,5 +308,6 @@ class TextController extends Controller
         ];
         MediaModel::insert($data);
     }
+
 }
 
