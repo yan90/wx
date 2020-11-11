@@ -89,11 +89,14 @@ class TextController extends Controller
                 $this->text($postArray,$content);
             }
             //点击二级 获取天气
-            if(strtolower($postArray->MsgType)=='Event'){
+            if(strtolower($postArray->MsgType)=='event'){
                 if($postArray->Event=='CLICK'){
+                    switch ($postArray->EventKey){
+                        case 'WEATHER';
                         $this->getweather();
-                                }
                         }
+                    }
+                }
 
         }elseif ($postArray->MsgType=="text"){
             $msg=$postArray->Content;
@@ -169,7 +172,13 @@ class TextController extends Controller
         $weather=json_decode($weather,true);
 //        dd($weather);
         if($weather['success']){
-            $content = '';
+            $content = '<xml>
+                            <ToUserName><![CDATA[%s]]></ToUserName>
+                            <FromUserName><![CDATA[%s]]></FromUserName>
+                            <CreateTime>%s</CreateTime>
+                            <MsgType><![CDATA[%s]]></MsgType>
+                            <Content><![CDATA[%s]]></Content>
+                            </xml>';
             foreach($weather['result'] as $v){
                 $content .= '日期：'.$v['days'].$v['week'].' 当日温度：'.$v['temperature'].' 天气：'.$v['weather'].' 风向：'.$v['wind'];
             }
