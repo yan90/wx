@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\models\MediaModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
@@ -46,8 +47,9 @@ class TextController extends Controller
             echo '';
         }
     }
-    //关注回复
+    //关注回复   用户入库
     public function sub(){
+        //获取微信post数据 xml(格式)
         $postStr = file_get_contents("php://input");
 //        Log::info("====".$postStr);
         $postArray=simplexml_load_string($postStr);
@@ -107,8 +109,21 @@ class TextController extends Controller
                 break;
             }
         }
+        //判断入库  
+        if(!empty($postArray)){
+            $toUser=$postArray->FromUserName;
+            $fromUser=$postArray->ToUserName;
+            //将聊天入库
+            $msg_type=$data->MsgType;//推送事件的消息类型
+            switch ($msg_type){
+                case 'video':
+                    $this->videohandler($data);
+                    break;
+            }
+        }
+
     }
-    //关注回复  判断再次回来
+    //关注回复
     public function text($postArray,$content){
 //        Log::info('222=============='.$postArray);
 //        Log::info('222=============='.$content);
@@ -126,7 +141,6 @@ class TextController extends Controller
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
         echo $info;
     }
-
     //获取天气预报
     public function getweather(){
         $url='http://api.k780.com:88/?app=weather.future&weaid=beijing&&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json';
@@ -238,10 +252,18 @@ class TextController extends Controller
             'verify'=>false,
             'body'=>json_encode($array,JSON_UNESCAPED_UNICODE)
         ]);
-
         $data=$response->getBody();
         echo $data;
     }
-
+    //视频
+    protected function videohandler($data){
+        $data=[
+            'add_time'=>$data->CreateTime,
+            'media_type'=>$data->MsgType,
+            'media_id'=>$data->MediaId,
+            'msg_id'=>$data->MsgId,
+        ];
+        MediaModel::insert($data);
+    }
 }
 
