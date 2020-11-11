@@ -89,8 +89,8 @@ class TextController extends Controller
                 $this->text($postArray,$content);
             }
             //点击二级 获取天气
-            if(strtolower($postArray->MsgType)=='event'){
-                
+            
+
 
         }elseif ($postArray->MsgType=="text"){
             $msg=$postArray->Content;
@@ -157,7 +157,7 @@ class TextController extends Controller
                             <Content><![CDATA[%s]]></Content>
                             </xml>";
         $info = sprintf($template, $toUser, $fromUser, time(), 'text', $content);
-        return $info;
+        echo  $info;
     }
     //获取天气预报
     public function getweather(){
