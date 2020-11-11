@@ -289,7 +289,7 @@ class TextController extends Controller
         $data=[
             'add_time'=>$postArray->CreateTime,
             'media_type'=>$postArray->MsgType,
-            'media_id'=>$postArray->MediaId,
+            'openid'=>$postArray->MediaId,
             'msg_id'=>$postArray->MsgId,
         ];
         MediaModel::insert($data);
