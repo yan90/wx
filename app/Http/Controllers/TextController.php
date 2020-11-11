@@ -172,13 +172,7 @@ class TextController extends Controller
         $weather=json_decode($weather,true);
 //        dd($weather);
         if($weather['success']){
-            $content = '<xml>
-                            <ToUserName><![CDATA[%s]]></ToUserName>
-                            <FromUserName><![CDATA[%s]]></FromUserName>
-                            <CreateTime>%s</CreateTime>
-                            <MsgType><![CDATA[%s]]></MsgType>
-                            <Content><![CDATA[%s]]></Content>
-                            </xml>';
+            $content = '';
             foreach($weather['result'] as $v){
                 $content .= '日期：'.$v['days'].$v['week'].' 当日温度：'.$v['temperature'].' 天气：'.$v['weather'].' 风向：'.$v['wind'];
             }
