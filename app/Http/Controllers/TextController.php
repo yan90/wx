@@ -117,7 +117,7 @@ class TextController extends Controller
             $msg_type=$postArray->MsgType;//推送事件的消息类型
             switch ($msg_type){
                 case 'video':
-                    $this->videohandler($data);
+                    $this->videohandler($postArray);
                     break;
             }
         }
@@ -256,12 +256,12 @@ class TextController extends Controller
         echo $data;
     }
     //视频
-    protected function videohandler($data){
+    protected function videohandler($postArray){
         $data=[
-            'add_time'=>$data->CreateTime,
-            'media_type'=>$data->MsgType,
-            'media_id'=>$data->MediaId,
-            'msg_id'=>$data->MsgId,
+            'add_time'=>$postArray->CreateTime,
+            'media_type'=>$postArray->MsgType,
+            'media_id'=>$postArray->MediaId,
+            'msg_id'=>$postArray->MsgId,
         ];
         MediaModel::insert($data);
     }
