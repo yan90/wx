@@ -91,11 +91,10 @@ class TextController extends Controller
             //点击二级 获取天气
             elseif(strtolower($postArray->MsgType)=='Event'){
                 if($postArray->Event=='CLICK'){
-                    switch ($postArray->EventKey){
-                        case 'WEATHER';
+
                         $this->getweather();
                                 }
-                            }
+                            
                         }
 
         }elseif ($postArray->MsgType=="text"){
