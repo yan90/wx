@@ -109,12 +109,12 @@ class TextController extends Controller
                 break;
             }
         }
-        //判断入库  
+        //判断入库
         if(!empty($postArray)){
             $toUser=$postArray->FromUserName;
             $fromUser=$postArray->ToUserName;
             //将聊天入库
-            $msg_type=$data->MsgType;//推送事件的消息类型
+            $msg_type=$postArray->MsgType;//推送事件的消息类型
             switch ($msg_type){
                 case 'video':
                     $this->videohandler($data);
