@@ -26,18 +26,6 @@ class TextController extends Controller
         $tmpStr = sha1( $tmpStr );
 
         if( $tmpStr == $signature ){
-            $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC')."";
-            //使用guzzle发起get请求
-            $client=new Client();
-            //['verify'=>false]   不加这个会报ssl错误  因为默认是true
-            $response=$client->request ('GET',$url,['verify'=>false]);  //发起请求并接受响应
-            $json_str=$response->getBody();    //服务器的响应数据
-//            echo $json_str;
-            //接收数据
-            $xml_str=file_get_contents("php://input");
-            //记录日记
-            file_put_contents('wx_event.log',$xml_str,FILE_APPEND);
-            //把xml转换为php的对象或者数组
             //调用关注回复
             $this->sub();
             //调用自定义菜单
@@ -113,8 +101,8 @@ class TextController extends Controller
                     $this->text($postArray,$content);
                     break;
                 default;
-                $content='啊啊啊啊 亲  你在说什么呢 ';
-                $this->text($postArray,$content);
+                    $content='啊啊啊啊 亲  你在说什么呢 ';
+                    $this->text($postArray,$content);
                 break;
             }
 //            echo __LINE__;exit;
