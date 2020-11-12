@@ -117,7 +117,7 @@ class TextController extends Controller
                 $this->text($postArray,$content);
                 break;
             }
-            echo __LINE__;exit;
+//            echo __LINE__;exit;
 //
         }
         //判断入库
