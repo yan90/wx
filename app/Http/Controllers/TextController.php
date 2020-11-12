@@ -36,7 +36,7 @@ class TextController extends Controller
             //接收数据
             $xml_str=file_get_contents("php://input");
             //记录日记
-            file_put_contents('wx_event.log',$xml_str);
+            file_put_contents('wx_event.log',$xml_str,FILE_APPEND);
             //把xml转换为php的对象或者数组
             //调用关注回复
             $this->sub();
@@ -68,7 +68,7 @@ class TextController extends Controller
                 $content="你好，欢迎关注";
                     $token=$this->token();
                     $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
-                    file_put_contents('user_wetch',$data);//存文件
+                    file_put_contents('user_wetch',$data,FILE_APPEND);//存文件
                     $wetch=file_get_contents($data);
                     $json=json_decode($wetch,true);
 //        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
