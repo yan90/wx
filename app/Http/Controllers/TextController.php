@@ -44,45 +44,59 @@ class TextController extends Controller
 //        Log::info('=============='.$postArray);
         $toUser= $postArray->FromUserName;//openid
         //evnet  判断是不是推送事件
-        if($postArray->MsgType=="event"){
-            if($postArray->Event=="subscribe"){
-                $WeachModelInfo=WeachModel::where('openid',$toUser)->first();
-                if(is_object($WeachModelInfo)){
+        if($postArray->MsgType=="event") {
+            if ($postArray->Event == "subscribe") {
+                $WeachModelInfo = WeachModel::where('openid', $toUser)->first();
+                if (is_object($WeachModelInfo)) {
                     $WeachModelInfo = $WeachModelInfo->toArray();
                 }
-                if(!empty($WeachModelInfo)) {
+                if (!empty($WeachModelInfo)) {
                     $content = "欢迎回来";
-                }else{
-                $content="你好，欢迎关注";
-                    $token=$this->token();
-                    $data="https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$token."&openid=".$toUser."&lang=zh_CN";
-                    file_put_contents('user_wetch',$data,FILE_APPEND);//存文件
-                    $wetch=file_get_contents($data);
-                    $json=json_decode($wetch,true);
+                } else {
+                    $content = "你好，欢迎关注";
+                    $token = $this->token();
+                    $data = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=" . $token . "&openid=" . $toUser . "&lang=zh_CN";
+                    file_put_contents('user_wetch', $data, FILE_APPEND);//存文件
+                    $wetch = file_get_contents($data);
+                    $json = json_decode($wetch, true);
 //        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
-
-                    $data=[
-                        'openid'=>$toUser,
-                        'nickname'=>$json['nickname'],
-                        'sex'=>$json['sex'],
-                        'city'=>$json['city'],
-                        'country'=>$json['country'],
-                        'province'=>$json['province'],
-                        'language'=>$json['language'],
-                        'subscribe_time'=>$json['subscribe_time'],
+                    $data = [
+                        'openid' => $toUser,
+                        'nickname' => $json['nickname'],
+                        'sex' => $json['sex'],
+                        'city' => $json['city'],
+                        'country' => $json['country'],
+                        'province' => $json['province'],
+                        'language' => $json['language'],
+                        'subscribe_time' => $json['subscribe_time'],
                     ];
-                    $weachInfo=WeachModel::insert($data);
+                    $weachInfo = WeachModel::insert($data);
                 }
 //                Log::info('111=============='.$postArray);
-                $this->text($postArray,$content);
+                $this->text($postArray, $content);
             }
             //点击二级 获取天气
-            if($postArray->Event=='CLICK'){
-                if($postArray->EventKey=='weather'){
+            if ($postArray->Event == 'CLICK') {
+                if ($postArray->EventKey == 'weather') {
                     //调用天气
                     $content = $this->getweather();
-                    $this->text($postArray,$content);
+                    $this->text($postArray, $content);
                 }
+            }
+            if ($postArray->Event == 'CLICK') {
+                if ($postArray->EventKey == 'checkin') {
+                    $key = 'USER_SIGN_' . date('Y_m_d', time());
+                    $content = '签到成功';
+                    $user_sign_info = Redis::zrange($key, 0, -1);
+                   if(in_array((string)$toUser,$user_sign_info)){
+                       $content='已经签到，不可重复签到';
+                   }else{
+                       Redis::zadd($key,time(),(string)$toUser);
+                   }
+                   $result= $this->text($postArray, $content);
+                   return $result;
+                    }
+
             }
 
 
@@ -319,6 +333,7 @@ class TextController extends Controller
         ];
         MediaModel::insert($data);
     }
+
 
 }
 
