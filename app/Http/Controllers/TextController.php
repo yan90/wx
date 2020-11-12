@@ -32,7 +32,7 @@ class TextController extends Controller
             //['verify'=>false]   不加这个会报ssl错误  因为默认是true
             $response=$client->request ('GET',$url,['verify'=>false]);  //发起请求并接受响应
             $json_str=$response->getBody();    //服务器的响应数据
-            echo $json_str;
+//            echo $json_str;
             //接收数据
             $xml_str=file_get_contents("php://input");
             //记录日记
@@ -41,7 +41,7 @@ class TextController extends Controller
             //调用关注回复
             $this->sub();
             //调用自定义菜单
-            $this->custom();
+//            $this->custom();
             echo "";
         }else{
             echo '';
@@ -72,7 +72,7 @@ class TextController extends Controller
                     $wetch=file_get_contents($data);
                     $json=json_decode($wetch,true);
 //        file_put_contents('user_wetch',$data,'FILE_APPEND');//存文件
-//        die;
+
                     $data=[
                         'openid'=>$toUser,
                         'nickname'=>$json['nickname'],
@@ -117,6 +117,7 @@ class TextController extends Controller
                 $this->text($postArray,$content);
                 break;
             }
+            echo __LINE__;exit;
 //
         }
         //判断入库
@@ -151,7 +152,7 @@ class TextController extends Controller
 //        Log::info('222=============='.$postArray);
 //        Log::info('222=============='.$content);
         $toUser= $postArray->FromUserName;//openid
-//        echo $toUser;exit;
+//
                 Log::info('222=============='.$toUser);
         $fromUser = $postArray->ToUserName;
         $template = "<xml>
@@ -191,7 +192,7 @@ class TextController extends Controller
         }else{
 //            echo"无缓存";'</br>';
             $url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".env('WX_APPID')."&secret=".env('WX_APPSEC')."";
-//        echo $url;exit;
+//
             $response=file_get_contents($url);
 
             $data=json_decode($response,true);
@@ -228,7 +229,7 @@ class TextController extends Controller
         $access_token=$this->token();
         $type='image';
         $url='https://api.weixin.qq.com/cgi-bin/media/upload?access_token='.$access_token.'&type='.$type;
-//        echo $url;exit;
+//
         $client=new Client();
         //['verify'=>false]   不加这个会报ssl错误  因为默认是true
         $response=$client->request ('POST',$url,[
@@ -279,7 +280,8 @@ class TextController extends Controller
                 ]
         ];
 //        $array->toArray();
-//        print_r($array) ;exit;
+//
+
         $client=new Client();
         $response=$client->request('POST',$url,[
             'verify'=>false,
