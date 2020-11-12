@@ -80,7 +80,8 @@ class TextController extends Controller
             if($postArray->Event=='CLICK'){
                 if($postArray->EventKey=='weather'){
                     //调用天气
-                    $this->getweather();
+                    $content = $this->getweather();
+                    $this->text($postArray,$content);
                 }
             }
 
