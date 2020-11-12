@@ -89,7 +89,12 @@ class TextController extends Controller
                 $this->text($postArray,$content);
             }
             //点击二级 获取天气
-
+            if($postArray->Event=='CLICK'){
+                if($postArray->EventKey=='weather'){
+                    //调用天气
+                    $this->getweather();
+                }
+            }
 
 
         }elseif ($postArray->MsgType=="text"){
